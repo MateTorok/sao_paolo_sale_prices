@@ -1,0 +1,5 @@
+.ipynb_checkpoints
+.vscode
+src/.ipynb_checkpoints
+src/__pycache__
+archive
