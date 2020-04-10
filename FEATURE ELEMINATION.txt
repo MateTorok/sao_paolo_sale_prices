@@ -1,0 +1,52 @@
+https://www.kaggle.com/pavanraj159/telecom-customer-churn-prediction
+
+5.3. Recursive Feature Elimination¶
+Recursive Feature Elimination (RFE) is based on the idea to repeatedly construct a model and choose either the best or worst performing feature, setting the feature aside and then repeating the process with the rest of the features. This process is applied until all features in the dataset are exhausted. The goal of RFE is to select features by recursively considering smaller and smaller sets of features.
+
+
+from sklearn.feature_selection import RFE
+
+logit = LogisticRegression()
+
+rfe = RFE(logit,10)
+rfe = rfe.fit(os_smote_X,os_smote_Y.values.ravel())
+
+rfe.support_
+rfe.ranking_
+
+idc_rfe = pd.DataFrame({"rfe_support" :rfe.support_,
+                       "columns" : [i for i in telcom.columns if i not in Id_col + target_col],
+                       "ranking" : rfe.ranking_,
+                      })
+cols = idc_rfe[idc_rfe["rfe_support"] == True]["columns"].tolist()
+
+logit_rfe = LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=None, solver='liblinear', tol=0.0001,
+          verbose=0, warm_start=False)
+
+
+5.4. Univariate Selection¶
+Feature Extraction with Univariate Statistical Tests (Chi-squared for classification)
+uses the chi squared (chi^2) statistical test for non-negative features to select the best features
+
+
+from sklearn.feature_selection import chi2
+from sklearn.feature_selection import SelectKBest
+
+#select columns
+cols = [i for i in telcom.columns if i not in Id_col + target_col ]
+
+#dataframe with non negative values
+df_x = df_telcom_og[cols]
+df_y = df_telcom_og[target_col]
+
+#fit model with k= 3
+select = SelectKBest(score_func = chi2,k = 3)
+fit    = select.fit(df_x,df_y)
+
+#Summerize scores
+print ("scores")
+print (fit.scores_)
+print ("P - Values")
+print (fit.pvalues_)
