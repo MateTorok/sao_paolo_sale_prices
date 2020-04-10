@@ -3,7 +3,7 @@ from sklearn.model_selection import cross_validate
 from pandas import DataFrame
 from pandas import MultiIndex
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from numpy import round
+import numpy as np
 
 def get_cros_val_scores(model, X , y, 
                         scoring = ['neg_mean_absolute_error', 'neg_root_mean_squared_error', 'r2'],
@@ -45,7 +45,7 @@ def mean_scores_format(scores):
     scores.rename({'neg_mean_absolute_error': 'MAE',
                     'neg_root_mean_squared_error': 'RMSE'}, 
                     level=1, axis =1, inplace = True)
-    return round(scores.agg(['mean', 'std']).stack().abs(),3).style.format('{0:,}')
+    return np.round(scores.agg(['mean', 'std']).stack().abs(),3).style.format('{0:,}')
 
 
 def get_metrics(y_act, y_pred, return_dict=True):
@@ -55,14 +55,14 @@ def get_metrics(y_act, y_pred, return_dict=True):
     if return_dict:
         return scores
     else:
-        print('\n', round( DataFrame(scores, index=['scores']),3 ))
+        print('\n', np.round( DataFrame(scores, index=['scores']),3 ))
 
 
-def get_scores(model, X, y, exp=False):
+def model_scores(model, X, y, exp=False):
     model.fit(X,y)
     y_pred = model.predict(X)
     if exp:
         y = np.exp(y) 
         y_pred = np.exp(y_pred)
-    scores = ev.get_metrics(y, y_pred)
-    return scores
+    scores = get_metrics(y, y_pred)
+    return np.round(DataFrame(scores, index=['scores']),3)

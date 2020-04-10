@@ -37,19 +37,6 @@ def boxer(df, title='Boxplot', cols=3, figsize=(12,8)):
     return fig, ax
 
 
-def boxer(df, plot_func, title='Boxplot', cols=3, figsize=(12,8)):
-    r, c = calc_square(df.shape[1], cols=cols)
-    fig, ax = plt.subplots(r, c, figsize=figsize)
-    fig.suptitle(title)
-
-    ax = ax.reshape(-1)
-    for i, cols in enumerate(df.columns):
-        sns.boxplot(df[cols], ax=ax[i] )
-    for j in range(i+1, len(ax)):
-        ax[j].set_axis_off() # Removing empty axes
-    plt.tight_layout(rect=[0, 0, 1, 0.95])
-    return fig, ax
-
 
 def make_histo(df, bins=35, title='Histogram', cols=3, figsize=(12,8) ):
     r, c = calc_square(df.shape[1], cols=cols)
