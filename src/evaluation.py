@@ -58,7 +58,7 @@ def get_metrics(y_act, y_pred, return_dict=True):
         print('\n', np.round( DataFrame(scores, index=['scores']),3 ))
 
 
-def model_scores(model, X, y, exp=False):
+def model_scores(model, X, y, exp=False, ret_pred=False):
     model.fit(X,y)
     y_pred = model.predict(X)
     if exp:
@@ -66,3 +66,5 @@ def model_scores(model, X, y, exp=False):
         y_pred = np.exp(y_pred)
     scores = get_metrics(y, y_pred)
     return np.round(DataFrame(scores, index=['scores']),3)
+
+
