@@ -51,3 +51,11 @@ def make_histo(df, bins=35, title='Histogram', cols=3, figsize=(12,8) ):
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])
     return fig, ax
+
+def act_vs_pred_plot(y_pred, y_train, figsize = (5,5) ):
+    plt.figure(figsize=figsize)
+    plt.plot(y_pred, y_train, 'o', alpha=0.6)
+    plt.plot([0,1e7],[0,1e7], linestyle='-') # diagonal line
+    plt.title('Actual and predicted price')
+    plt.xlabel('Predicted')
+    plt.ylabel('Actual')
